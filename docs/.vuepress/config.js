@@ -2,7 +2,7 @@ const sideBar = require("./modules/generate");
 
 module.exports = {
     port: 8894,
-    base: '/dist/',
+    base: '/windhome/dist/',
     dest: "./dist",
     title: '風之家',
     head: [
