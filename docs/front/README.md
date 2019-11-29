@@ -1,10 +1,10 @@
 ---
-sidebar: auto
 sideBarTitle: 大前端
 title: 潜谈web前端开发(一)
 lang: zh-CN
 ---
 
+[[toc]]
 
 ## 1前后端分离模式
 web2.0时代快速发展，前端开发的职责不再是局限于页面的编写，一系列的业务逻辑也能在前端的环境中完美处理。ES6 的到来，衍生出一系列优秀js框架，其中以 Angular，Vue，React，三足鼎立，占据了前端框架的大半壁江山。

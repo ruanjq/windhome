@@ -38,7 +38,7 @@ window.onload = function(){
 <div class="canvas-wrap" id="js_christmas"></div>
 ```
 
-* snowflake 参数说明
+#### snowflake 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |insert|`string`|必填|父容器id 选择器|
@@ -76,7 +76,7 @@ Marsonry({
 </div>
 ```
                     
-* Marsonry 参数说明
+#### Marsonry 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |containerId|`string`|必填|父容器`id` 选择器|
@@ -115,7 +115,7 @@ marquee.init();
 </div>
 ```
 
-* Marquee 参数说明
+#### Marquee 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |dom|`string`|必填|父容器id 选择器|

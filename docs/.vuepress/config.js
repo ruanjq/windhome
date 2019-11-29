@@ -12,13 +12,23 @@ module.exports = {
             rel: 'shortcut icon',
             type: "image/x-icon",
             href: `/images/favicon.ico`
-        }]
+        }],
+        ['script', {}, `
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?ab4ebebbea4df8ea62cf5195aff6b3a2";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        `]
     ],
     description: '我不去想身后会不会袭来寒风冷雨，既然目标是地平线，留给世界的只能是背影',
     markdown: {
         lineNumbers: false,
 
     },
+    plugins: ['@vuepress/back-to-top'],
     configureWebpack: {
         resolve: {
             alias: {

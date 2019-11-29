@@ -10,5 +10,5 @@ lang: zh-CN
 
 
 ## 服务端
-### [Node.js](/front/nodejs/ "Node.js")
+### [Node.js](/server/nodejs/ "Node.js")
 

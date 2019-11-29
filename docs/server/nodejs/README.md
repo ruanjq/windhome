@@ -1,6 +1,5 @@
 ---
-sidebar: auto
-sideBarTitle: node+mongodb 后台管理系统
+sideBarTitle: Node.js
 title: 基于node+mongodb +express+ejs 技术栈搭建的一套完整功能的后台管理系统
 lang: zh-CN
 ---

@@ -1,5 +1,4 @@
 ---
-sidebar: auto
 title: node 转发接口请求
 lang: zh-CN
 ---
