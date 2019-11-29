@@ -225,9 +225,9 @@ shell.cp("-R",path.resolve(__dirname,"./docs/.vuepress/dist/*"), path.resolve(__
 ````
 
 ### 5:部署GitHub Pages
-1:准备购买备案好的域名 [www.windhome.win](https://www.windhome.win)
+* 准备购买备案好的域名 [www.windhome.win](https://www.windhome.win)
 
-2:GitHub ---> Setting ----> master branch ----> Custom domain  (www.windhome.win) 
+* GitHub ---> Setting ----> master branch ----> Custom domain  (www.windhome.win) 
 
 
 ### 6:TODO
