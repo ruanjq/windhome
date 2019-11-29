@@ -1,5 +1,5 @@
 ---
-title: JavaScript 简介
+title: JavaScript
 lang: zh-CN
 ---
 

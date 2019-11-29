@@ -1,5 +1,5 @@
 ---
-title: HTMLCSS 简介
+title: HTML/CSS
 lang: zh-CN
 ---
 

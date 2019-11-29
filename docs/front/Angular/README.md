@@ -1,5 +1,5 @@
 ---
-title: Angiular 简介
+title: Angiular
 lang: zh-CN
 ---
 

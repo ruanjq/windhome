@@ -18,7 +18,7 @@ lang: zh-CN
 ### 专业技能
 ```javascript
 1：掌握扎实的HTML、CSS、JavaScript（ES6），Ajax基础知识；能构建出兼容主流浏览器的高性能页面
-2：熟悉Vue全家桶、Angular、TypeScript、PWA、Cordova、Ionic、jQuery、等开发框架
+2：熟悉Vue全家桶、Angular、TypeScript、React、PWA、Cordova、Ionic、jQuery、等开发框架
 3：熟悉Gulp、RollUp、Webpack自动化构建框架
 4：掌握SQLServer、MySQL、MongoDB 数据库
 5：了解JAVA、Node.js、PHP 后端服务开发语言
@@ -51,6 +51,7 @@ lang: zh-CN
 3. 跨部门沟通对接，配合团队成员，推动项目的研发进展
 4. 分析后台订单支付数据及安全监控平台数据，把控项目中可存在的安全风险问题，主导并推动线上系统技术故障分析解决
 5. 技术攻关，负责新技术的研究与接入
+6. 负责网站活动大促业务，视频直播业务开发。
 ```
 **荣誉奖项**
 ```javascript
@@ -84,7 +85,7 @@ lang: zh-CN
 2. 网站UI改版优化，品牌升级，提升了网站提升了知名度及影响力
 3. Web前端性能优化，使得网站加载速度方面提升10%
 4. app，pc, m拉新活动开发，为网站带来了20%的新用户
-5. 活动大促专题的开发，增加了网站的流量及点击率，使得网站日均销售额提升10%
+5. 活动大促专题的开发,网站直播,增加了网站的流量及点击率，使得网站日均销售额提升10%
 ```
 
 **Geshop页面建站系统**
