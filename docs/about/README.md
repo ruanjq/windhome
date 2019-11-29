@@ -230,5 +230,11 @@ shell.cp("-R",path.resolve(__dirname,"./docs/.vuepress/dist/*"), path.resolve(__
 2:GitHub ---> Setting ----> master branch ----> Custom domain  (www.windhome.win) 
 
 
+### 6:TODO
+* 完善截图自动上传服务器，提供在线链接
+* 接入百度统计
+* 接入leancloud 云端API
+
+
 
 
