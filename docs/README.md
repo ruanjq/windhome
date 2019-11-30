@@ -1,7 +1,7 @@
 ---
 home: true
 title: 风之家
-heroImage: '/images/logo.png'
+heroImage: '/images/icons/logo_256x256.png'
 heroText: 風之家
 tagline: 我不去想身后会不会袭来寒风冷雨，既然目标是地平线，留给世界的只能是背影
 actionText: 浏览文章 →
