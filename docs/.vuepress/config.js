@@ -16,11 +16,11 @@ module.exports = {
             })();
         `],
         ['link', { rel: 'manifest', href: '/manifest.json' }],
-        ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+        ['meta', { name: 'theme-color', content: '#4BB547' }],
         ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
         ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
         ['link', { rel: 'apple-touch-icon', href: '/images/icons/logo_256x256.png' }],
-        ['link', { rel: 'mask-icon', href: '/images/icons/safari-pinned-tab.svg', color: '#3eaf7c' }],
+        ['link', { rel: 'mask-icon', href: '/images/icons/safari-pinned-tab.svg', color: '#4BB547' }],
         ['meta', { name: 'msapplication-TileImage', content: '/images/icons/logo_256x256.png' }],
         ['meta', { name: 'msapplication-TileColor', content: '#000000' }]
     ],
@@ -46,7 +46,7 @@ module.exports = {
     },
     themeConfig: {
         // 添加导航栏
-        logo: '/images/icons/logo_36x36.png',
+        logo: '/images/icons/logo_256x256.png',
         sidebar: 'auto',
         lastUpdated: '最近修改:', // 文档更新时间：每个文件git最后提交的时间
         repo: 'https://github.com/ruanjq/windhome', // 你的 Git 项目地址，添加后会在导航栏的最后追加
