@@ -1,5 +1,5 @@
 ---
-title: 自定义实现 Promise
+title: 手写Promise
 lang: zh-CN
 ---
 

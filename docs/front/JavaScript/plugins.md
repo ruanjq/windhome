@@ -1,24 +1,24 @@
 ---
-title: 一些实用创意的小工具插件集
+title: JS插件集
 lang: zh-CN
 ---
 
-## [一些实用创意的小工具插件集](https://ruanjq.github.io/plugins/)
+# [一些实用创意的小工具插件集](https://ruanjq.github.io/plugins/)
 
 
 
-### [1:基于canvas 绘制动态时钟](https://ruanjq.github.io/plugins/clock.html)
+## [1:基于canvas 绘制动态时钟](https://ruanjq.github.io/plugins/clock.html)
 
 ![canvas 时钟](https://raw.githubusercontent.com/ruanjq/plugins/master/images/clock.gif)
 
 
 
-### [2:canvas+svg 绘制生日蛋糕表白爱心](https://ruanjq.github.io/plugins/birthday.html)
+## [2:canvas+svg 绘制生日蛋糕表白爱心](https://ruanjq.github.io/plugins/birthday.html)
 
 ![绘制生日蛋糕表白爱心](https://raw.githubusercontent.com/ruanjq/plugins/master/images/heart.png)
 
 
-### [3:canvas 圣诞节雪花效果](https://ruanjq.github.io/plugins/snowflake.html)
+## [3:canvas 圣诞节雪花效果](https://ruanjq.github.io/plugins/snowflake.html)
 
 ![圣诞节雪花效果](https://raw.githubusercontent.com/ruanjq/plugins/master/images/snowflake.png)
 
@@ -38,7 +38,7 @@ window.onload = function(){
 <div class="canvas-wrap" id="js_christmas"></div>
 ```
 
-#### snowflake 参数说明
+### snowflake 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |insert|`string`|必填|父容器id 选择器|
@@ -48,7 +48,7 @@ window.onload = function(){
 
 
 
-### [4:原生js 瀑布流布局插件](https://ruanjq.github.io/plugins/masonry.html)
+## [4:原生js 瀑布流布局插件](https://ruanjq.github.io/plugins/masonry.html)
 
 ![原生js 瀑布流布局插件](https://raw.githubusercontent.com/ruanjq/plugins/master/images/masonry.png)
 
@@ -76,7 +76,7 @@ Marsonry({
 </div>
 ```
                     
-#### Marsonry 参数说明
+### Marsonry 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |containerId|`string`|必填|父容器`id` 选择器|
@@ -87,7 +87,7 @@ Marsonry({
                     
 
 
-### [5:原生js 抽奖列表滚动插件](https://ruanjq.github.io/plugins/marquee.html)
+## [5:原生js 抽奖列表滚动插件](https://ruanjq.github.io/plugins/marquee.html)
 
 ![原生js 抽奖列表滚动插件](https://raw.githubusercontent.com/ruanjq/plugins/master/images/marquee.gif)
 
@@ -115,7 +115,7 @@ marquee.init();
 </div>
 ```
 
-#### Marquee 参数说明
+### Marquee 参数说明
 |属性名称|类型|是否可选|说明|
 |:--:|:--:|:--:|:--|
 |dom|`string`|必填|父容器id 选择器|
@@ -125,7 +125,7 @@ marquee.init();
 
 
 <br>
-### [6:未完，待续.......](https://ruanjq.github.io/plugins/index.html)
+## [6:未完，待续.......](https://ruanjq.github.io/plugins/index.html)
 
 
 

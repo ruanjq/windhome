@@ -1,5 +1,5 @@
 ---
-title: gulp 多页项目打包构建配置
+title: gulp 打包构建配置
 lang: zh-CN
 ---
 
