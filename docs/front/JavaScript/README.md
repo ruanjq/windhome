@@ -57,5 +57,6 @@ JavaScript（通常缩写为JS）是一种高级的、解释型的编程语言[5
 
 ::: tip 参考以下文档：
 [维基百科JavaScript简介](https://zh.wikipedia.org/wiki/JavaScript)
+
 [阮一峰JavaScript语言的历史](https://javascript.ruanyifeng.com/introduction/history.html)
 :::

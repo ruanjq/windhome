@@ -37,6 +37,7 @@ CSS3的标志。
 CSS3分成了不同类别，称为“modules”。而每一个“modules”都有于CSS2中额外增加的功能，以及向后兼容。CSS3早于1999年已经开始制订。[17]直到2011年6月7日，CSS 3 Color Module终于发布为W3C Recommendation。[18]
 CSS3里增加了不少功能，如：“border-radius”、“text-shadow”、“transform”以及“transition”。CSS3亦支持动画（animation）及立体（preserved-3d）。
 部分属性（例如旋转类属性（如：transform），动画类属性，立体类属性），由于现时不同浏览器支持程度不同，需要加上不同的浏览器前缀来区分。
+
 - CSS4
 W3C于2011年9月29日开始了设计CSS4[19][20]。直至现时只有极少数的功能被部分网页浏览器支持，如使用在HTML而非SVG上的pointer-events[21]。
 CSS4增加了一些更方便的选择器，并简化了一些现有选择器的用法。
@@ -44,5 +45,6 @@ CSS4增加了一些更方便的选择器，并简化了一些现有选择器的�
 
 ::: tip 参考以下文档：
 [维基百科HTML简介](https://zh.wikipedia.org/wiki/HTML)
+
 [维基百科CSS简介](https://zh.wikipedia.org/wiki/层叠样式表)
 :::
