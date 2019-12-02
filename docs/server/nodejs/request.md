@@ -7,7 +7,8 @@ lang: zh-CN
 ### Node 转发接口请求
 
 使用`request` 包转发接口,每次请求登录表单认证接口 `headers` 头部`Cookie`字段都要置位空，否则会缓存上一个客户端连接请求过来的登录信息，造成第二个客户端连接本地node服务请求第三方登录接口认为已经登陆了
-* 注意点
+
+**注意点**
 * 1：传递 formData 提交第三方 form 接口请求，登录认证成功后，获取 `response.headers['set-cookie']` 的值，
 * 2：将 `response.headers['set-cookie']` 的获取的值 express router res 对象写入客户端cookie res.cookie('S_SESSIONID', phpsession);
 * 3：登录认证成功后,每次客户端请求接口都带上刚刚获取的第三方cookie,第三方接口则会认为登录认证成功，返回数据

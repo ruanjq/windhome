@@ -36,12 +36,12 @@ lang: zh-CN
 
 ### 3:自动生成sideBar菜单
 siderBar.js
-```
+```vue
 windhome
 └───docs
     └───.vuepress
         └───modules
-            └───siderBar.js
+            └───`siderBar.js`
 
 ```
 
