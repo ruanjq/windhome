@@ -696,3 +696,77 @@ setTimeout(callback.bind(Person),3000);
 </script>
 ```
 
+## 常见的HTTP 状态码
+```
+1xx: 状态信息码,表示服务端已经接收了客户端的请求,客户端可继续发送请求
+    100（Continue/继续）
+    101（Switching Protocols/转换协议）
+
+2XX: 成功状态码
+    200 请求OK
+    204 No Content 没有内容
+    206 Partial Content 局部内容
+
+3XX: 跳转
+    301: (Permanently Moved) 永久重定向
+    302：(Temporarily Moved ) 临时重定向
+
+4xx：用户指定客户端的错误
+    400（Bad Request/错误请求）：指出客户端请求中的语法错误
+    401（Unauthorized/未授权）：表示客户端在授权头信息中没有有效的身份信息时，访问收到密码保护的页面。这个授权必须包含一个WWW-Authenticate的授权信息头
+    403（Forbidden/禁止）：表示除非拥有授权，否则服务器拒绝提供所请求的资源。
+    404（Not Found）：无法找到资源
+
+5xx：用户指定服务器的错误
+    500 (Internal Server Error/内部服务器错误)：是常用的“服务器错误”状态
+    502 (Bad Gateway/错误的网关)：被用于充当代理或网关的服务器；该状态指出接收服务器接收到远端服务器的错误响应。
+```
+
+
+## 输出以下代码的执行结果
+```javascript
+async function test(){
+    console.log(1);
+    
+    await test2();
+
+    console.log(300);
+
+    let x = await 200;
+    console.log(x);
+}
+
+async function test2(){
+    console.log(400);
+}
+
+console.log(0);
+test();
+console.log(2);
+
+// 输出结果为  0  1  400  2  300  200
+// test 执行结果返回一个Promise 对象resolve 状态
+// x 的执行结果返回的是一个具体的值
+// async 语法声明的函数为宏任务函数,
+// await 语句会阻塞下面语句的执行
+```
+
+
+## 手动实现js 数组 Map 方法
+```javascript
+function myMap(arr,fn){
+    let result = [];
+    for(let i = 0; i < arr.length; i++){
+        let x = fn.call(arr,arr[i],i);
+        result.push(x);
+    }
+    return result;
+}
+var a = [1,2,3,4];
+var b = myMap(a,function(item){
+    return item + 2;
+})
+console.log(b);
+``` 
+
+## Vuejs Hooks 

@@ -30,12 +30,12 @@ module.exports = {
     },
     plugins: [
         '@vuepress/back-to-top',
-        '@vuepress/pwa',
-        {
-            serviceWorker: true,
-            popupComponent: 'SWUpdatePopup',
-            updatePopup: true
-        }
+        // '@vuepress/pwa',
+        // {
+        //     serviceWorker: true,
+        //     popupComponent: 'SWUpdatePopup',
+        //     updatePopup: true
+        // }
     ],
     configureWebpack: {
         resolve: {
@@ -62,7 +62,7 @@ module.exports = {
             text: '关于我',
             link: '/resume/'
         },{
-            text: '关于风之家',
+            text: '关于風之家',
             link: '/about/'
         }],
         sidebar: sideBar()
