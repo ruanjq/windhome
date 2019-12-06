@@ -1,18 +1,33 @@
 <template>
-    <div class="leaf-loading">
-        <span class="leaf-one"></span>
-        <span class="leaf-two"></span>
-        <span class="top_left_01"></span>
-        <span class="top_left_02"></span>
-        <span class="top_left_03"></span>
-        <span class="right_bottom"></span>
+    <div>
+        <div class="leaf-loading">
+            <span class="leaf-one"></span>
+            <span class="leaf-two"></span>
+            <span class="top_left_01"></span>
+            <span class="top_left_02"></span>
+            <span class="top_left_03"></span>
+            <span class="right_bottom"></span>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     data(){
-        return{}
+        return{
+            test:{
+                vueData:"vue data",
+                jsData:"js data"
+            }
+        }
+    },
+    methods:{
+        vueDelete(){
+            this.$delete(this.test,"vueData");
+        },
+        jsDelete(){
+            delete this.test.jsData;
+        }
     }
 }
 </script>
