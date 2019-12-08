@@ -1,5 +1,5 @@
 ---
-sideBarTitle: VUE
+sideBarTitle: Vue 面试题
 title: Vue 高级面试题(一)
 lang: zh-CN
 ---
@@ -129,6 +129,7 @@ class VNode{
 ## Diff 算法
 Diff 流程图
 当数据发生改变时候，set 方法会调用Dep.notify 通知订阅者调用`watcher` `update` 方法，接着会调用`patch`给真实的DOM 打补丁，更新相应的视图。
+参考：[VirtualDOM 算法实现](https://www.windhome.win/front/Vue/virtualDOM.html)
 ![Diff 流程图](https://user-gold-cdn.xitu.io/2018/5/19/163777930be304eb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1 "Diff 流程图")
 
 ## Vue.nextTick实现原理
@@ -147,6 +148,101 @@ Diff 流程图
     })
 ```
 ![Vue.nextTick](https://segmentfault.com/img/bV17xC?w=423&h=512 "")
-`Vue`
 
 
+## babel 编译原理
+`babel`的主要功能就是将代码以字符串的形式传递给它，然后`babel` 内部进行编译转换，返回一段新的代码字符串(以及sourceMap)，输入ES6语言，转换ES5
+**编译步骤分为以下3个阶段**
+- parse 解析，将输入的代码解析为源代码抽象语法树`(AST Abstract Syntax Tree，是源代码语法结构的一种抽象表现形式，以树状的数据结构表示，树上的每个节点都表示源代码的一种结构)`，首先会将代码进行分词，将整段代码分割为语法单元数组，如（空白，注释，字符串，数字，标识符，运算符，括号），然后再进行语义分析，
+- transform 转换，根据一定规则将抽象语法树进行转换
+- generator 生成，使用`bebal-generator`插件将转换后的抽象语法树生成普通ES5代码字符串
+
+## Vue是如何对template 模板进行编译的
+总结为三个过程,parse、optimize、render
+- parse 解析template，将字符串的template 转换为`AST (Abstract Syntax Tree) ` 抽象语法树，得到指令，class ，style 等数据，`Vue` 对AST定义了三种类型,`Type 1: ASTElement`、`Type:2 ASTExpression`、`Type:3 ASTText`,假设我们有一个元素 `<div id="test">texttext</div>`在 parse 完之后会变成如下的结构并返回
+```javascript
+ele1 = {
+    type:1,
+    tag:"div",
+    attrList:[{name:"id",value:"test"}],
+    attrsMap:{id:"test"},
+    parent:undefined,
+    children:[{
+        type:3,
+        text:"texttext"
+    }],
+    plain: true,
+    attrs: [{name: "id", value: "'test'"}]
+}
+```
+- optimize 优化，将parse解析的AST进行静态内容的优化，标记所有的静态和非静态节点，在`Diff patch`的时候跳过静态内容的对比，达到优化的目的，（静态内容指的是和数据没有关系，不需要每次都属性的内容），经过optmizite 优化后，AST对象每个节点都会新增一个`static`属性 
+- `generator`生成`render`：render 方法最终得到了一个函数字符串，它递归了AST树，为不同的AST节点创建不同的内部调用方法，如render函数字符串中会出现 _c，_v，_s，_q 方法，通过这些函数，render 函数最终会返回一个VNode节点，在_update 的时候对比原来的VNode,找出对应的patches 对象，进而更新DOM
+参考：[Template 模板编译](https://segmentfault.com/a/1190000015886547)
+
+
+## Vue如何自定义指令
+```javascript
+
+// 注册
+Vue.directive('my-directive',{
+    bind:function(){},
+    inserted:function(){},
+    update:function(){},
+    componentUpdated:function(){},
+    unbind:function(){},
+});
+
+// 注册指令函数
+Vue.directive('my-directive',function(){
+     // 这里将会被 `bind` 和 `update` 调用
+});
+
+// 获取指令
+var myDirective = Vue.directive('my-directive');
+```
+
+## keep-alive实现原理
+`keep-alive`是`Vue`内置组件，它能够将不活动的组件保存在内存中，不被销毁，不会被渲染到真实的DOM中。提供exclude和include2个属性，进行动态缓存，也可以结合vue-router 来使用，
+它提供2个生命钩子`created`和`destroyed`钩子,
+- create 会创建一个cache对象，保存VNode节点：
+- destroyed 删除this.cache中缓存的VNode实例
+
+**源代码**
+```javascript
+// src/core/components/keep-alive.js
+export default {
+  name: 'keep-alive',
+  abstract: true, // 判断当前组件虚拟dom是否渲染成真是dom的关键
+
+  props: {
+    include: patternTypes, // 缓存白名单
+    exclude: patternTypes, // 缓存黑名单
+    max: [String, Number] // 缓存的组件实例数量上限
+  },
+
+  created () {
+    this.cache = Object.create(null) // 缓存虚拟dom
+    this.keys = [] // 缓存的虚拟dom的健集合
+  },
+
+  destroyed () {
+    for (const key in this.cache) { // 删除所有的缓存
+      pruneCacheEntry(this.cache, key, this.keys)
+    }
+  },
+
+  mounted () {
+    // 实时监听黑白名单的变动
+    this.$watch('include', val => {
+      pruneCache(this, name => matches(val, name))
+    })
+    this.$watch('exclude', val => {
+      pruneCache(this, name => !matches(val, name))
+    })
+  },
+
+  render () {
+    // 先省略...
+  }
+}
+```

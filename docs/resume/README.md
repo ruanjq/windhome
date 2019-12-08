@@ -18,7 +18,7 @@ lang: zh-CN
 ### 专业技能
 ```javascript
 1：掌握扎实的HTML、CSS、JavaScript（ES6），Ajax基础知识；能构建出兼容主流浏览器的高性能页面
-2：熟悉Vue全家桶、Angular、TypeScript、React、PWA、Cordova、Ionic、jQuery、等开发框架
+2：熟悉Vue全家桶、Angular、TypeScript、React、PWA、Cordova、Ionic、AntDesign、jQuery、等开发框架
 3：熟悉Gulp、RollUp、Webpack自动化构建框架
 4：掌握SQLServer、MySQL、MongoDB 数据库
 5：了解JAVA、Node.js、PHP 后端服务开发语言
@@ -137,10 +137,13 @@ ERS费用报销系统是一款基于员工出差费用申请，费用报销，�
 
 ### 附加选项
 ```javascript
-1：基于 Vuepress 搭建的响应式博客网站 http://www.windhome.win
-2：github主页   https://github.com/ruanjq
-3：基于Node.js + angularjs 搭建12306抢票系统 https://github.com/ruanjq/12306
-4：基于Chrome扩展开发的一	款图片下载插件 https://github.com/ruanjq/imgDownload
-5：平时关注一些博客平台：掘金，Segmentfault，刷B站视频教程，LeetCode练习算法
-6：爱好爬山徒步，K歌，羽毛球等运动
+1：Github 主页 https://github.com/ruanjq
+2：基于Vuepress 技术搭建的个人博客网站 https://www.windhome.win/
+3：基于Angualr4.0、Typescript、ES6 、yarnd、leancloud搭建的响应式博客DEMO https://ruanjq.github.io/angular-typescript
+4：基于Node.js+Express+MongoDB+Ejs 搭建的一套后台管理系统https://github.com/ruanjq/node-mongodb
+5：基于Node.js + angularjs 搭建12306抢票系统 https://github.com/ruanjq/12306
+6：基于Chrome扩展开发的一	款图片下载插件 https://github.com/ruanjq/imgDownload
+7：平时关注一些博客平台：掘金，Segmentfault，刷B站视频教程，LeetCode练习算法
+8：爱好爬山徒步，K歌，羽毛球等运动
+
 ```

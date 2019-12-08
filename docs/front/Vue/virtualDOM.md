@@ -8,7 +8,7 @@ lang: zh-CN
 ## 什么是VirtualDOM
 `VirtualDOM`是通过js对象的数据结构，模拟真实的DOM对象，通过`render` 方法渲染成真实的`dom`,再通过`Diff` 算法,对比对象差异,通过patch方法 将补丁更新到差异的DOM上。
 
-::: tip 
+::: tip
 DOM Diff 算法比较2个虚拟DOM的区别，找出区别创建补丁，返回一个patch对象，根据补丁更新DOM
 本质是比较两个对象的区别，
 算法。深度优先递归比较，
