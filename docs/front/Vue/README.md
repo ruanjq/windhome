@@ -246,3 +246,23 @@ export default {
   }
 }
 ```
+
+
+## 聊一聊Vuex原理
+**Vuex 主要的核心为5个部分组成**
+- state:负责存储属性状态,当注册store 实例后,可通过`this.$store.属性名`来访问状态，且状态为响应式
+- getter:修改 `state` 属性,存放一些组件公用方法,且返回值会被缓存起来，当依赖的值发生改变，返回值会重新计算
+- mutation: 同步方法，负责修改state数据，由 `commit` 提交过来的操作执行mutation 方法
+- action：可以是异步调用的方法, 提交至 `mutation` 间接修改 `state`,在组件内可以通过 `dispatch` 方法或者 `mapAction` 调用
+
+**原理**
+
+- 首先通过 `Vue.use(store)` 注册实例,store 为一棵单一的状态树
+
+- store 类的构造函数会有一个 `install` 方法，当前是否已经注册，只允许注册一次,未注册则赋值全局 `Vue` 变量
+
+- 接着会调用一个 `applyMinxin` 方法，通过 `vue.minxin` 方法往所有的组件注册Vue 生命周期的 `beforeCreate` 方法,钩子函数执行的逻辑代码为 将组件内options 的 属性绑定到根实例 `this.store` 属性上面，这样就不用通过options 属性或者父组件option 调用
+
+- 接下来会执行`installModule` 和 `resetStoreVM` 方法，`installModule` 方法为递归调用的方法，循环注册 mutation, action, getter,
+
+- `resetStoreVM` resetStoreVM 方法内部定义一个私有变量_VM,它是Vue的一个实例,它会保留旧的State 树以及 getter 数据，内部方法会判断旧的vm 对象，并将oldVM.store 重置为null
