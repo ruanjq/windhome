@@ -92,4 +92,31 @@ var myEvent = (function () {
 
     return new MyEvent();
 })();
+
+myEvent.broadcast("infoCheck",{data:"broadcast1"});
+ 
+
+myEvent.on("infoCheck",function(data){
+    console.log(data)  // 1,2,3
+})
+
+
+myEvent.emit("infoCheck",{data:"emit2"});
+myEvent.emit("infoCheck",{data:"emit3"});
+
+
+//--------------------------
+
+myEvent.broadcast("once",{data:"once1"});
+ 
+
+myEvent.once("once",function(data){
+    console.log(data)  // only once1
+})
+
+
+myEvent.emit("once",{data:"once2"});
+myEvent.emit("once",{data:"once3"});
+
+
 ```
