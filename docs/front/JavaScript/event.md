@@ -97,7 +97,7 @@ myEvent.broadcast("infoCheck",{data:"broadcast1"});
  
 
 myEvent.on("infoCheck",function(data){
-    console.log(data)  // 1,2,3
+    console.log(data)  //  broadcast1  emit2  emit3
 })
 
 
