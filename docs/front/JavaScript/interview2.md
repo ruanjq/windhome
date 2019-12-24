@@ -42,7 +42,7 @@ function render(tpl,data){
  
 
 ## TCP 特性
-- `TCP` 提供一种面向连接的，可靠的字节流服务
+- `TCP` 是一种面向连接的单播协议,在发送数据前，通信双方必须建立在彼此的一条链接上
 - 在一个`TCP`连接中,仅有两方进行彼此通信，广播和多播不能用于TCP
 - TCP 并不能保证数据一定会被对方接受到
 
@@ -64,3 +64,171 @@ function render(tpl,data){
 - 服务器收到ACK 报文之后,也处于`ESTABLISHED` 状态，此时，双方建立链接，TCP握手结束
 
 ![三次握手流程](https://raw.githubusercontent.com/HIT-Alibaba/interview/master/img/tcp-connection-made-three-way-handshake.png "三次握手流程")
+
+
+## 用ES3实现一个bind函数
+```javascript
+Function.prototype.myBind = function(){
+    var _self = this;
+    var argumentsWrap = arguments;
+    return function(){
+        var args = [].slice.apply(argumentsWrap,[1]);
+        return _self.apply(argumentsWrap[0],args);
+    }
+}
+
+
+//调用方式
+var name = "bb";
+var test = {
+    name:"aa",
+    say:function(){
+        console.log(this.name);
+    }
+}
+
+var s = test.say.myBind(window);
+s(); // bb
+```
+
+## 用ES3实现一个apply 函数
+```javascript
+Function.prototype.myApply = function(){
+    var args = [];
+    var ctx = arguments[0] || window;
+    ctx.__fn__ = this;
+
+    // 难点解析 - 接受不定长参数,使用 eval 传递参数执行
+    for(var i = 1; i < arguments.length; i++){
+        args.push("arguments["+i+"]");
+    }
+    var result = eval('ctx.__fn__('+args+')');
+    delete ctx.__fn__;
+    return result;
+
+}
+
+//调用方式
+var name = "bb";
+var test = {
+    name:"aa",
+    say:function(){
+        console.log(this.name);
+    }
+}
+
+test.say.myApply(window);   //  b 
+
+```
+
+
+
+## 将一个ts代码实现的继承，其中有私有属性和静态属性，请用es5来实现它，
+```javascript
+(function(){
+    
+    function Animal(){
+        // 私有属性
+        var color = "黄色";
+        this.name = "动物";
+        this.makeSound = function(sound){
+            console.log(sound);
+        }
+    }
+
+    Animal.prototype.running = function(){
+        console.log(this.name,"奔跑中");
+    }
+
+    // 静态属性
+    Animal.weight = "30kg";
+
+
+    // 继承方式1，构造函数绑定
+    function Cat(){
+        this.name = "小猫咪";
+        // 构造函数继承不能访问 父类 prototype的属性和方法
+        Animal.apply(this,arguments);
+    }
+
+    var c = new Cat();
+    c.makeSound("喵喵喵");
+    // c.running();  报错，无法访问
+    console.log(Cat.weight);
+
+
+    // 继承方式2 prototype 模式(常见)
+    function Dog(){
+        this.name = "大毛";
+    }
+
+    Dog.prototype = new Animal();
+    Dog.prototype.constructor = Dog;
+
+    var dog = new Dog();
+    dog.running();
+    dog.makeSound("汪汪汪")
+
+})();
+
+```
+
+
+## 手动封装一个jsonp函数，要求能支持百万并发
+```javascript
+function jsonp(params){
+    var url = params.url;
+    var data = params.data;
+    var callbackId = "callbck"+Date.now();
+    var scriptNode = null;
+    return new Promise(function(resolve,reject){
+        var qs = /\?/g.test(url) ? "&" : "?";
+        for(var key in data){
+            qs += (key + "=" + data[key]) + "&";
+        }
+        url += qs;
+        url += "callback=" + callbackId;
+        scriptNode = createScript(url);
+
+        scriptNode.addEventListener("error",function(){
+            reject();
+        });
+
+        window[callbackId] = function(result){
+            resolve(result);
+            delete window.callbackId;
+            scriptNode.remove();
+        }
+
+        function createScript(url){
+            var script = document.createElement("script");
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+            return script;
+        }
+    });
+}
+
+jsonp({
+    url:"https://www.baidu.com",
+    data:{
+        a:"1",
+        b:"2"
+    }
+}).then(function(res){
+    console.log(res);
+});
+```
+
+
+
+## 用node实现一个CORS的中间件
+```javascript
+app.use((req, res) => {
+    res.header('Access-Control-Allow-Origin','*');//设置跨域需要的响应头。
+})
+```
+
+
+
+这是第一轮笔试题。第二轮，根据你的简历，开始问源码，用过vuex，就问他怎么实现的？问的很深的那种！还有网络安全，tcp的原理是什么，怎么实现的等。
