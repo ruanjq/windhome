@@ -118,7 +118,7 @@ TCP链接的断开需要发送4个包,因此称为4次挥手(Four-way handshake)
 |&nbsp;|ACK,ACK=seq+1,seq=ack  ---->|&nbsp;|
 |`TIME_WAIT`|&nbsp;|`CLOSE`|
 
-![TCP/IP4次挥手](https://yqfile.alicdn.com/img_982e17a3dba88e42a9accfab0aca1ef2.png "TCP\/IP4次挥手")
+![TCP/IP4次挥手](/images/front/img_982e17a3dba88e42a9accfab0aca1ef2.png "TCP\/IP4次挥手")
 
 ::: 计算规则
 - seq: 为序列号
