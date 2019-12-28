@@ -187,7 +187,7 @@ test.say.myApply(window);   //  b
 
 
 
-## 将一个ts代码实现的继承，其中有私有属性和静态属性，请用es5来实现它，
+## 将一个ts代码实现的继承，其中有私有属性和静态属性
 ```javascript
 (function(){
     
@@ -306,4 +306,52 @@ for(let i = 0; i < 10; i++){
         console.log(err);
     });
 }
+```
+
+## 拓展Function.prototype实现一个AOP
+AOP(面向切面编程 Aspect Oriented Programming)主要是将一些与核心业务逻辑模板无关的功能抽取出来，这些功能包括日志统计,安全控制,或者是异常处理等等。
+实现方案:通过拓展Function.prototype来“动态植入”到业务逻辑模块中,保持业务逻辑的纯净度和高内聚
+```javascript
+// 现在有一个eat 方法,那么如何在eat 方法之前和之后分别beforeEat,afterEat函数，
+// 使依次输出 买菜做饭，吃饭中,,,, 洗碗,打扫卫生...
+
+function beforeEat(){
+    console.log("买菜做饭,,,,,,");
+}
+
+function eat(name){
+    console.log(name + "吃饭中.....");
+    return "success";
+}
+
+function afterEat(){
+    console.log("洗碗,打扫卫生,,,,");
+}
+
+Function.prototype.before = function(fn){
+    var _this = this;
+    return function(){
+        fn.apply(this,arguments);
+        return _this.apply(this,arguments);
+    }
+}
+
+Function.prototype.after = function(fn){
+    var _this = this;
+    return function(){
+        var r = _this.apply(this,arguments);
+        fn.apply(this,arguments);
+        return r;
+    }
+}
+
+eat = eat.before(beforeEat).after(afterEat);
+
+
+var result = eat("Believer");
+// 买菜做饭,,,,,,
+// Believer吃饭中.....
+// 洗碗,打扫卫生,,,,
+// success
+
 ```
