@@ -45,7 +45,7 @@ cat1.likes.push("fish");  // 更改cart实例中的fish 对象，同时也将cat
 console.log(cat1.likes, cat.likes);
 // "eat","sleep","play","fish"  "eat","sleep","play","fish"
 ```
-::: waring 
+::: warning 
 虽然父类的实例成为了子类的原型对象,子类可以共用父类的实例和方法,但是每个子类的实例都是共用父类的实例,所以当父类的实例属性是引用对的类型的时候 如果改变改变父类实例的数据，会导致所有的子类实例的属性都改变。
 :::
 
@@ -86,7 +86,7 @@ console.log(cat.likes,cat1.likes)
 
 ```
 
-::: waring 
+::: warning 
 通过构造函数实现继承的方式,本质上是通过apply,call 方法将父类的this指向子类的构造函数的实例，改变子类原型对象的属性,父类实例并不会受到影响.缺点：子类无法访问父类原型上的方法
 :::
 
@@ -184,7 +184,7 @@ console.log(cat.likes,cat1.likes)
 console.log(cat instanceof Cat,cat instanceof Animal);  // true  true
 ```
 
-:::warning
+::: warning
 通过 Object.create() 创建一个中间对象{},这个中间对象原型指向Animal.prototype，在将这个中间对象赋值给子类的prototype,最后将子类的构造函数指向Cat本身, cat instanceof Cat,cat instanceof Animal 都为true
 :::
 
