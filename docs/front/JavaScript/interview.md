@@ -696,31 +696,6 @@ setTimeout(callback.bind(Person),3000);
 </script>
 ```
 
-## 常见的HTTP 状态码
-```
-1xx: 状态信息码,表示服务端已经接收了客户端的请求,客户端可继续发送请求
-    100（Continue/继续）
-    101（Switching Protocols/转换协议）
-
-2XX: 成功状态码
-    200 请求OK
-    204 No Content 没有内容
-    206 Partial Content 局部内容
-
-3XX: 跳转
-    301: (Permanently Moved) 永久重定向
-    302：(Temporarily Moved ) 临时重定向
-
-4xx：用户指定客户端的错误
-    400（Bad Request/错误请求）：指出客户端请求中的语法错误
-    401（Unauthorized/未授权）：表示客户端在授权头信息中没有有效的身份信息时，访问收到密码保护的页面。这个授权必须包含一个WWW-Authenticate的授权信息头
-    403（Forbidden/禁止）：表示除非拥有授权，否则服务器拒绝提供所请求的资源。
-    404（Not Found）：无法找到资源
-
-5xx：用户指定服务器的错误
-    500 (Internal Server Error/内部服务器错误)：是常用的“服务器错误”状态
-    502 (Bad Gateway/错误的网关)：被用于充当代理或网关的服务器；该状态指出接收服务器接收到远端服务器的错误响应。
-```
 
 
 ## 输出以下代码的执行结果
