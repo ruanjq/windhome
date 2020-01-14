@@ -262,3 +262,98 @@ var result = eat("Believer");
 // success
 
 ```
+
+
+## 高阶函数防抖,节流
+防抖函数和节流函数本质是不一样的。防抖函数是将多次执行变为最后一次执行或第一次执行，节流函数是将多次执行变成每隔一段时间执行。
+```html
+<button id="J_throttle">throttle test</button>
+<button id="J_debounce">debounce test</button>
+<script>
+// timer 版本
+function throttle(fn, delay) {
+    var canRun = true;
+    return function () {
+        if (!canRun) return;
+        var context = this,
+            arg = arguments;
+        canRun = false;
+        setTimeout(function () {
+            fn.apply(context, arg);
+            canRun = true;
+        }, delay);
+    }
+}
+
+// 时间戳版本
+function throttle(fn,delay){
+    var preTime = 0;
+    return function(){
+        var now = Date.now();
+        if(now - preTime >= delay){
+            fn.apply(this,arguments);
+            preTime = now;
+        }
+    }
+}
+
+
+
+// 时间戳+timer 优化版本
+function throttle(fn,delay){
+    let preTime = 0,
+        timer = null;
+    return function (...args) {
+        let now = Date.now();
+        // 没有剩余时间 || 修改了系统时间
+        console.log(now - preTime);
+        if(now - preTime >= delay || preTime > now){
+            if(timer){
+                clearTimeout(timer);
+                timer = null;
+            }
+            preTime = now;
+            fn.apply(this,args);
+        } else if(!timer){
+            timer = setTimeout(()=>{
+                preTime = Date.now();
+                timer = null;
+                fn.apply(this,args)
+            },delay);
+        }
+    }
+}
+
+
+
+function debounce(fn, delay) {
+    var timer = null;
+    return function () {
+        var context = this,
+            arg = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context, arg);
+            timer = null;
+        }, delay);
+    }
+}
+
+var t1 = throttle(function () {
+    // console.log(111);
+}, 1000);
+
+var d1 = debounce(function () {
+    console.log(111);
+}, 1000);
+
+// 无论点击多次，点击多块，每隔1s 执行一次
+document.getElementById("J_throttle").addEventListener("click",function(){
+    t1();
+}, false);
+
+// 1s 内连续点击多次只执行一次
+document.getElementById("J_debounce").addEventListener("click", function () {
+    d1();
+}, false);
+```
