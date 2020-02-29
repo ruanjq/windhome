@@ -228,3 +228,74 @@ lang: zh-CN
     }
 </script>
 ```
+
+## 实现groupBy函数，将学⽣按照成绩等级进⾏分组。
+```html
+
+<pre>
+    实现⼀个 groupBy 函数，将学⽣按照成绩等级进⾏分组。
+    // 成绩等级分为A、B和C三级
+    function getGrade(score){
+        return score < 60 ? 'C' :
+        score < 80 ? 'B' : 'A';
+    };
+    // 学⽣及其成绩
+    let students = [
+        {name: '张三', score: 84},
+        {name: '李四', score: 58},
+        {name: '王五', score: 99},
+        {name: '赵六', score: 69}
+    ];
+
+    ```
+    实现该函数： groupBy(students);
+    输出为：
+        {
+        'A': [
+        {name: '王五', score: 99},
+        {name: '张三', score: 84}
+        ],
+        'B': [{name: '赵六', score: 69}],
+        'C': [{name: '李四', score: 58}]
+        }
+    ```
+</pre>
+<script>
+    // 小于60  C
+    // 60~80   B
+    // 大于80  A
+    let students = [
+        {name: '张三', score: 84},
+        {name: '李四', score: 58},
+        {name: '王五', score: 99},
+        {name: '赵六', score: 69}
+    ];
+    var leave = {
+        "A":function (score) {
+            return score >= 80
+        },
+        "B":function(score){
+            return score >= 60 && score < 80
+        },
+        "C":function(score){
+            return score < 60
+        }
+    }
+    function groupBy(students){
+        var result = {};
+        students.forEach(function(item){
+            let score = item.score;
+            for(let l in leave){
+                if(leave[l](score)){
+                    if(!result[l]){
+                        result[l] = [];
+                    }
+                    result[l].push(item);
+                }
+            }
+        });
+        return result;
+    }
+    console.log(groupBy(students));
+</script>
+```
