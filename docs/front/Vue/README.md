@@ -85,7 +85,7 @@ render(tpl,data);
 - Observer监听数据 然后给每个属性对应new Dep(),通过发布订阅模式,notify通知数据更新
 - Compile 类编译模板当正则替换数据时候添加new Watcher监听对象，通知属性值更新
 - Watcher 类观察者，声明一个update 方法，当新值和旧值不相等时，通过callback对dom更新
-
+![MVVM原理是什么](/images/front/vue_yuanli.jpeg "MVVM原理是什么")
 
 ## 什么是虚拟DOM
 虚拟DOM 是通过JS对象数据结构模拟真实的DOM结构，通过算法实现DOM的创建和渲染，通过diff 算法对比DOM 差异，能提升页面的性能，减少DOM 回流操作
