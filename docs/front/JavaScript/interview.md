@@ -104,7 +104,7 @@ numbersCloseEnoughToEqual( 0.0000001, 0.0000002 ); // false
 5:函数的prototype属性的构造函数指向函数的本身
 6:原型链的最顶端 Object.prototype.__proto__ === null
 ```
-![TCP/IP4次挥手](/images/front/prototype.jpeg "原型和原型链")
+![原型和原型链](/images/front/prototype.jpeg "原型和原型链")
 
 ::: tip 参考以下文档：
 [JS中的原型规则与原型链](https://www.cnblogs.com/YiNongLee/p/9335506.html)

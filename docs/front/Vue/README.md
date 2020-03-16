@@ -6,6 +6,9 @@ lang: zh-CN
 
 # Vue 高级面试题(一)
 
+## vue 的生命周期
+![vue 的生命周期](/images/front/vue_lifecycle.png "vue 的生命周期")
+
 ## 聊聊Object.defineProperty
 ```javascript
 // 语法 Object.defineProperty(obj, prop, descriptor)
