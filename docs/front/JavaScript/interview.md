@@ -1,10 +1,10 @@
 ---
-title: 前端常见的面试题
+title: 前端常见的面试题(一)
 lang: zh-CN
 ---
 
 
-# 前端常见的面试题
+# 前端常见的面试题(一)
 
 ## JavaScript规定了几种语言类型
 ```javascript

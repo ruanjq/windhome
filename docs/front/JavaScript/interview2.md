@@ -357,3 +357,15 @@ document.getElementById("J_debounce").addEventListener("click", function () {
     d1();
 }, false);
 ```
+
+## common.js 和 ES6中模块引入的区别
+```javascript
+- `CommonJS`是一种模块规范,最初被应用于`Node.js` 成为`Nodejs`的模块规范，它有4个重要的环境变量为模块化的实现提供支持：`module`,`exports`,`require`,`global`
+- `ES6 Module` 是基于ES6规范实现的模块化功能，主要有2个命令构成 `export`和`import`
+- 这2这的主要差别为：
+- CommonJS模块输出的是一个值得拷贝,ES6模块输出的是值得引用
+- CommonJS模块是运行时加载，ES6模块是斌阿姨时输出接口
+- CommonJS是单个值导出,ES6 Module可以导出多个
+- CommonJS的动态语法可以写在判断里，ES6 Module静态语法只能写在顶层
+- CommonJS的this指向当前模块，ES6 Module的this是undefined
+```
