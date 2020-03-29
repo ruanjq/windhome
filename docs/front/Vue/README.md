@@ -258,6 +258,7 @@ export default {
 - mutation: 同步方法，负责修改state数据，由 `commit` 提交过来的操作执行mutation 方法
 - action：可以是异步调用的方法, 提交至 `mutation` 间接修改 `state`,在组件内可以通过 `dispatch` 方法或者 `mapAction` 调用
 
+
 **原理**
 
 - 首先通过 `Vue.use(store)` 注册实例,store 为一棵单一的状态树
@@ -269,3 +270,10 @@ export default {
 - 接下来会执行`installModule` 和 `resetStoreVM` 方法，`installModule` 方法为递归调用的方法，循环注册 mutation, action, getter,
 
 - `resetStoreVM` resetStoreVM 方法内部定义一个私有变量_VM,它是Vue的一个实例,它会保留旧的State 树以及 getter 数据，内部方法会判断旧的vm 对象，并将oldVM.store 重置为null
+
+- Vue Component --> dispatch 触发异步的 Actions
+- Actions --> commit 触发同步的 Mutations
+- Mutations --> 修改 State 里面的值
+- State 修改以后 --> 会触发 Vue Component 视图的渲染
+
+![Vuex原理](/images/front/vuex.png "Vuex原理")
