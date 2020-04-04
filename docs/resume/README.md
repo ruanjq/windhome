@@ -8,7 +8,7 @@ lang: zh-CN
 
 ### 阮继潜 <img src="https://avatars3.githubusercontent.com/u/13013913" width="20"/>  
 
-### 高级WEB前端开发工程师 
+### 高级WEB前端开发工程师 @明源云
 
 ```javascript
 阮继潜 | 26岁 | 男 | 大专 ︳5年工作经验 ︳深圳  ︳离职状态(一周内到岗)
