@@ -30,11 +30,16 @@ lang: zh-CN
 
 对比优势和劣势的内容，总得来说，BFF框架还是客观的，很明显优势大于劣势。
 
-## BFF技术架构
+## BFF技术栈
+`Koa2`、`Typescript`、`Routing-controllers`、`Typedi`、`class-validator`、`grpc`、`Log4js`
 
-
-
-
+- [Koa](https://koajs.com/) 基于`Node.js`封装的开源框架，能快速搭建Web应用程序，Koa2支持全新的ES规范(`async`,`await`)
+- [Typescript](https://www.tslang.cn/index.html) 是`Javascript`类型的超集,支持类型校验，接口声明，泛型，Class扩展等多多种特性，弥补了`Javascript`的不足之处,它可以编译为纯的`Javascript`,可以在任何浏览器，任何计算机和任何操作系统运行，并且开源,前端圈流行一句话：“任何优秀的项目都可以用`Typescript`实现,任何能用`JavaScript`实现的应用，最终都会用`Typescript`实现。”
+- [Routing-controllers](https://www.npmjs.com/package/routing-controllers) 基于`Node.js`封装的框架，处理路由和控制器的行为，通过装饰器特性更方便的进行路由配置，请求参数校验，中间件的处理，支持`express.js`和`koa.js`.
+- [typedi](https://www.npmjs.com/package/typedi) 是一个` dependency injection`依赖注入的工具，类似比较成熟的`JAVA`中的依赖注入特性,将有依赖关系的类放到容器中,然后解析出类的实例，目的是实现类的解耦
+- [class-validator](https://www.npmjs.com/package/class-validator) 对参数进行类型校验的工具库，通过装饰器模式的特性，能够高效的验证参数类型。
+- [grpc](https://grpc.io/)  gRPC是Google开源的一套现代高性能RPC框架,可以在任何环境中运行。它可以有效地连接服务和跨数据中心可插入支持负载平衡、跟踪、健康检查和验证。它也适用于最后一英里的分布式计算连接设备,移动应用程序和浏览器的后端服务。
+- [Log4js]() `Javascript`的`Log`日志管理插件
 
 
 
