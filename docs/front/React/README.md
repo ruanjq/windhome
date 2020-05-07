@@ -7,7 +7,21 @@ lang: zh-CN
 # React 面试题(一)
 
 ## 什么是React
-`React` 是一个用于构建用户界面的 `JavaScript` 库,通过声明式编程方式编写函数组件，
+`React` 是一个用于构建用户界面的 `JavaScript` 库,通过`JSX`语法声明式编程方式编写函数组件，
+
+
+## React 生命周期
+`React` 生命周期分为三个阶段,`挂载阶段`，`更新阶段`，`卸载阶段`，`错误阶段`
+- 挂载阶段：`constructor`->`static getDerivedStateFromProps`->`render`->`componentDidMount`
+- 更新阶段：`static getDerivedStateFromProps`->`shouldComponentUpdate`->`render`->`getSnapshotBeforeUpdate`->`componentDidUpdate`
+- 卸载阶段：`componentWillUnMount`
+- 错误阶段：`static getDerivedStateFromError`,`componentDidCatch`
+
+![React 生命周期](/images/front/react.png "React 声明周期")
+
+::: tip 参考以下文档
+[React生命周期](http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+:::
 
 ## setState为什么要设计成异步的
 - 保持内部的一致性，即使`state`是同步更新，`props`也不是
