@@ -11,6 +11,8 @@ lang: zh-CN
 ## 组件代码
 ```javascript
 
+import React, { useRef, useEffect, FC } from "react";
+
 // dataToCanvas.tsx
 /**
  * @description 加载图片链接
@@ -25,11 +27,11 @@ export const loadImg = (src: string): Promise<any> => {
 
     // 加载图片的时候记得设置允许跨域
     image.setAttribute("crossOrigin", "anonymous");
-    image.onload = function() {
+    image.onload = function () {
       resolve(image);
     };
 
-    image.onerror = function(e) {
+    image.onerror = function (e) {
       console.error("load img err", e);
       reject();
     };
@@ -43,7 +45,7 @@ export const loadImg = (src: string): Promise<any> => {
  */
 export const ArrLoadImg = (arrSrc: string[]): Promise<any> => {
   let arrLoadImgPromise: any = [];
-  arrSrc.forEach(item => {
+  arrSrc.forEach((item) => {
     arrLoadImgPromise.push(loadImg(item));
   });
   return Promise.all(arrLoadImgPromise);
@@ -201,18 +203,31 @@ const drawCircleBorder = (
   ctx.restore();
 };
 
-type DataType = "text" | "images" | undefined;
+type DataType = "text" | "images" | "linearGradient" | undefined;
 
-export interface IDataItem {
+export interface ILinearGradient {
+  type?: DataType;
+  linearGradienAxis?: [number, number, number, number];
+  colorStops?: [[number, string], [number, string]];
+  fillRect?: [number, number, number, number];
+}
+
+export interface IImages {
   type?: DataType;
   src?: string;
-  text?: string;
+  size?: number[];
   position?: number[];
   circle?: boolean;
   circleBorder?: {
     lineWidth: number;
     strokeStyle: string;
   };
+}
+
+export interface IText {
+  type?: DataType;
+  text?: string;
+  position?: number[];
   style?: {
     fillStyle?: string;
     fontSize?: number;
@@ -220,11 +235,10 @@ export interface IDataItem {
     lineHeight?: number;
     maxWidth?: number;
     row?: number;
-    [index: string]: any;
   };
-  size?: number[];
-  width?: number;
-  height?: number;
+}
+
+export interface IDataItem extends IImages, ILinearGradient, IText {
   [index: string]: any;
 }
 
@@ -237,72 +251,29 @@ export interface IDataToCanvasProps {
   onFinish?: (canvas?: any) => void;
 }
 
-const DataToCanvas: FC<IDataToCanvasProps> = props => {
+const DataToCanvas: FC<IDataToCanvasProps> = (props) => {
   const fontFamily =
     "'-apple-system-font, Helvetica Neue, Helvetica, sans-serif'";
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const {
-    id = 'canvas',
+    id = "canvas",
     width = 375,
     height = 667,
     style,
     onFinish = (v: any) => {},
-    data
+    data,
   } = props;
-  const startDraw = async (dataSource: any[], ctx: any, ratio: number) => {
-    const typeForImgData: any[] = dataSource.filter(
-      item => item.type === "images" && item.src !== ""
-    );
-    const typeForTextData: any[] = dataSource.filter(
-      item => item.type === "text" && item.text !== ""
-    );
-    const filterSrc: any[] = typeForImgData.map(item => item.src);
-    const arrImagesInfo = await ArrLoadImg(filterSrc);
-
-    // 绘制图片
-    for (const item of typeForImgData) {
-      arrImagesInfo.some((image: HTMLImageElement) => {
-        if (image.src.includes(item.src)) {
-          item.imgNode = image;
-          return true;
-        } else return false;
-      });
-      // 判断是否画圆形
-      if (item.circle) {
-        circleImg(
-          ctx,
-          item.imgNode,
-          item.position[0] * ratio,
-          item.position[1] * ratio,
-          item.size[0] * ratio
-        );
-        // 绘制圆形边框
-        if (item.circleBorder) {
-          if (item.circleBorder.lineWidth) {
-            item.circleBorder.lineWidth = item.circleBorder.lineWidth * ratio;
-          }
-          drawCircleBorder(
-            ctx,
-            item.position[0] * ratio,
-            item.position[1] * ratio,
-            item.size[0] * ratio,
-            item.circleBorder
-          );
-        }
-      } else {
-        ctx.drawImage(
-          item.imgNode,
-          item.position[0] * ratio,
-          item.position[1] * ratio,
-          item.size[0] * ratio,
-          item.size[1] * ratio
-        );
-      }
-    }
-
-    // 绘制文本
-    typeForTextData.forEach(item => {
+  const startDraw = async (
+    dataSource: IDataItem[],
+    ctx: CanvasRenderingContext2D,
+    ratio: number
+  ) => {
+    /**
+     * @description 绘制文本类型
+     * @param item
+     */
+    const drawText = async (item: IDataItem) => {
       ctx.textAlign = `left`;
       ctx.fillStyle = item.style.fillStyle;
       ctx.font = `${item.style.fontSize * ratio}px ${fontFamily}`;
@@ -325,9 +296,113 @@ const DataToCanvas: FC<IDataToCanvasProps> = props => {
       }
       ctx.save();
       ctx.restore();
-    });
+      return Promise.resolve();
+    };
 
-    onFinish(document.getElementById(id));
+    /**
+     * @description 绘制图片类型
+     * @param item
+     */
+    const drawImages = async (item: IDataItem) => {
+      try {
+        const imgNode = await loadImg(item.src);
+        item.imgNode = imgNode;
+        // 判断是否画圆形
+        if (item.circle) {
+          circleImg(
+            ctx,
+            item.imgNode,
+            item.position[0] * ratio,
+            item.position[1] * ratio,
+            item.size[0] * ratio
+          );
+          // 绘制圆形边框
+          if (item.circleBorder) {
+            if (item.circleBorder.lineWidth) {
+              item.circleBorder.lineWidth = item.circleBorder.lineWidth * ratio;
+            }
+            drawCircleBorder(
+              ctx,
+              item.position[0] * ratio,
+              item.position[1] * ratio,
+              item.size[0] * ratio,
+              item.circleBorder
+            );
+          }
+        } else {
+          ctx.drawImage(
+            item.imgNode,
+            item.position[0] * ratio,
+            item.position[1] * ratio,
+            item.size[0] * ratio,
+            item.size[1] * ratio
+          );
+        }
+        return Promise.resolve();
+      } catch (error) {
+        // 图片加载失败不阻塞后面的绘制过程
+        return Promise.resolve();
+      }
+    };
+
+    /**
+     * @description 绘制渐变样式
+     * @param item
+     */
+    const drawLinearGradient = async (item: IDataItem) => {
+      if (item.linearGradienAxis.length === 4) {
+        const linearGradienAxis: any = item.linearGradienAxis.map(
+          (arrItem: number) => arrItem * ratio
+        );
+        const fillRect: any = item.fillRect.map(
+          (arrItem: number) => arrItem * ratio
+        );
+        const linearGrad = ctx.createLinearGradient.apply(
+          ctx,
+          linearGradienAxis
+        );
+        linearGrad.addColorStop.apply(linearGrad, item.colorStops[0]); //第一个参数表示关键颜色的位置0表示起始位置,1表示终点位置,第二个参数表示关键颜色的颜色。
+        linearGrad.addColorStop.apply(linearGrad, item.colorStops[1]);
+        ctx.fillStyle = linearGrad;
+        ctx.fillRect.apply(ctx, fillRect);
+        ctx.save();
+        ctx.restore();
+      }
+      return Promise.resolve();
+    };
+
+    if (dataSource.length > 0) {
+      const copyData: any = dataSource.slice(0);
+      (async function drawQueue(copyDataSource) {
+        const item = copyDataSource.shift();
+        if (item) {
+          switch (item.type) {
+            case "images":
+              try {
+                await drawImages(item);
+              } catch (error) {}
+              break;
+            case "linearGradient":
+              try {
+                await drawLinearGradient(item);
+              } catch (error) {}
+              break;
+            case "text":
+              try {
+                await drawText(item);
+              } catch (error) {}
+              break;
+            default:
+              break;
+          }
+          drawQueue(copyDataSource);
+        } else {
+          onFinish(document.getElementById(id));
+        }
+      })(copyData);
+    } else {
+      onFinish(document.getElementById(id));
+    }
   };
 
   useEffect(() => {
@@ -335,7 +410,8 @@ const DataToCanvas: FC<IDataToCanvasProps> = props => {
     if (!canvas) return;
     const context = canvas.getContext("2d");
     if (context) {
-      const ratio = getPixelRatio(context);
+      let ratio = getPixelRatio(context);
+      ratio = ratio > 2 ? 2 : ratio; // 最大用2倍
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       canvas.style.width = `${width}px`;
@@ -348,6 +424,8 @@ const DataToCanvas: FC<IDataToCanvasProps> = props => {
 
   return data ? <canvas id={id} ref={canvasRef} style={style} /> : null;
 };
+
+export default DataToCanvas;
 ```
 
 ## 调用方式
@@ -363,6 +441,12 @@ export default function App() {
         "https://big-c.oss-cn-hangzhou.aliyuncs.com/cms/img/uhma03zug7d1o7jdmvxlg69bx0y1tnym%E5%B0%81?t=" +
         Date.now(),
       size: [375, 667]
+    },
+    {
+      type:"linearGradient",
+      linearGradienAxis:[0, 497, 0, 667],
+      colorStops:[[0.0, 'rgba(0,0,0,0)'],[1.0, 'rgba(0,0,0,0.8)']],
+      fillRect:[0, 497, 375, 170]
     },
     {
       type: "images",
@@ -439,7 +523,7 @@ export default function App() {
   );
 }
 ```
-![浏览器缓存策略](/images/front/dataToCanvas.jpg "")
+![canvas 绘制图片](/images/front/dataToCanvas2.png "")
 
 
 ## API 文档说明
@@ -454,16 +538,38 @@ export default function App() {
 |data|绘制canvas 的data 数据集合|`Array<IDataItem>`|[]|
 |onFinish|canvas绘制结束后的回调函数|`Function(value: HTMLCanvasElement)`||
 
-### IDataItem接口说明
+### IDataItem 接口说明
+`IDataItem` 继承 `IImages` `ILinearGradient` `IText`
 |属性|说明|类型|默认值|
 |:--|:--|:--|:--|
-|type|绘制的类型，text和imgage2种取值|`string`||
+|type|绘制的类型，`text`、`images`、`linearGradient` 3种取值|`string`||
+
+### IImages 接口说明
+|属性|说明|类型|默认值|
+|:--|:--|:--|:--|
+|type|`images`|`string`||
+|src|图片链接地址，注意图片跨域情况，通常在图片链接添加随机数防止canvas绘制报错|`string`||
 |position|元素绘制的位置，相对于canvas画布尺寸 [x距离,y距离]|`number[]`||
-|text|当type为`text`值得时候，绘制的文本文案,可支持最大宽度，行数显示，超过长度和行数显示省略号,详细参考`style`属性说明|`string`||
-|src|当type类型为`images`时候设置的图片链接地址，注意图片跨域情况，通常在图片链接添加随机数防止canvas绘制报错|`string`||
 |size|当type类型为`images`时候设置绘制图片元素的宽度和高度 [宽度,高度] |`number[]`||
 |circle|当type类型为`images`时候是否设置绘制图片类型为圆形|`boolean`||
 |circleBorder|当type类型为`images`且`circle`为`true`时候设置边框样式,详见`circleBorder`接口说明|`object`||
+
+### IText 接口说明
+|属性|说明|类型|默认值|
+|:--|:--|:--|:--|
+|type|`text`|`string`||
+|text|绘制的文本文案,可支持最大宽度，行数显示，超过长度和行数显示省略号,详细参考`style`属性说明|`string`||
+|position|元素绘制的位置，相对于canvas画布尺寸 [x距离,y距离]|`number[]`||
+|style|文本样式,详见`style属性说明`接口说明|`object`||
+
+### ILinearGradient 接口说明
+|属性|说明|类型|默认值|
+|:--|:--|:--|:--|
+|type|`linearGradient`|`string`||
+|linearGradienAxis|对应canvas api [`CanvasRenderingContext2D.createLinearGradient()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/createLinearGradient) 方法的参数|`number[]`|
+|colorStops|对应canvas api [`CanvasGradient.addColorStop()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasGradient/addColorStop) 方法的参数,二维数组|`number[]`||
+|fillRect|对应canvas api [`CanvasRenderingContext2D.fillRect()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillRect) 方法的参数|`number[]`||
+
 
 ### circleBorder 属性说明
 |属性|说明|类型|默认值|
