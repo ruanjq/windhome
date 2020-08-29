@@ -9,7 +9,7 @@ lang: zh-CN
 
 
 ## 组件源码
-```javascript
+```tsx
 import useScroll from "../hooks/useScroll"
 import React, { RefObject, useState, useRef, useEffect, useImperativeHandle, forwardRef, useMemo } from "react"
 
@@ -204,7 +204,7 @@ export default forwardRef(NavPage)
 
 
 ## 调用方式
-```javascript
+```tsx
 import React, { useState, useRef, useEffect } from "react";
 
 import NavPage from "../components/NavPage"
