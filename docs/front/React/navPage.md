@@ -193,7 +193,7 @@ const NavPage = (props: navPageProps, ref: React.Ref<any>) => {
   }, [scrollInfo])
 
 
-  return <div ref={navRef} style={{ height: `${height}px` }}>
+  return <div ref={navRef} style={{ height: height+"px" }}>
     <div style={navStyle}>{children}</div>
   </div>
 }
