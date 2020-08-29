@@ -265,7 +265,7 @@ export default function NavPageDemo() {
       <nav style={styleNavWrap}>
         <ul ref={scrollNavRef} style={styleScrollNav}>
           {data.map((item: any) => {
-            return <li style={{...styleNavItem,...Object.assign({},item.section_id === currentKey ? styleCurrent : {})}} id={`${navIdPrefix}${item.section_id}`} onClick={e => handleClick(item.section_id)} className={` ${item.section_id === currentKey ? 'current' : ''}`} key={item.section_id}>
+            return <li style={styleNavItem} id={`${navIdPrefix}${item.section_id}`} onClick={e => handleClick(item.section_id)} className={` ${item.section_id === currentKey ? 'current' : ''}`} key={item.section_id}>
               {item.list}
             </li>
           })}
