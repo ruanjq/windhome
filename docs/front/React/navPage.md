@@ -14,65 +14,71 @@ import useScroll from "../hooks/useScroll"
 import React, { RefObject, useState, useRef, useEffect, useImperativeHandle, forwardRef, useMemo } from "react"
 
 export interface navPageProps<T = string | number, S = RefObject<HTMLElement> | string> {
-  scrollContainer: S;
-  scrollNavContainer: S;
+  scrollContainer: S
+  scrollNavContainer: S
   keyList?: Array<T>
   floorIdPrefix?: string
   navIdPrefix?: string
   children?: any
-  height: number;
+  height: number
   fixedStyle?: React.CSSProperties
+  scrollCheckOffsetTop?: boolean
   onChange?(key?: T): void
 }
 
-
 export interface floorOffsetTopMapProps {
-  [propsName: string]: number;
+  [propsName: string]: number
 }
 
 export interface navPageUtilProps<T = string | number, S = RefObject<HTMLElement> | string> {
-  floorOffsetTopMap?: floorOffsetTopMapProps,
+  floorOffsetTopMap: floorOffsetTopMapProps | null
   mergeStyle(style: React.CSSProperties): React.CSSProperties
-  getOffsetLeft?(elment: HTMLElement): number
-  getOffsetTop?(elment: HTMLElement): number
-  getFloorOffsetTop?(keyList: Array<T>, floorIdPrefix: string): floorOffsetTopMapProps
-  getActiveFloorKey?(keyList: Array<T>, floorIdPrefix: string, clientHeight: number, scrollTop: number): T
-  scrollToNav?(scrollNavContainer: S, key: T, navIdPrefix: string): void
-  scrollToFloor?(scrollElment: HTMLElement, key: T, floorIdPrefix: string, navHeight: number): void
+  getOffsetLeft(elment: HTMLElement): number
+  getOffsetTop(elment: HTMLElement): number
+  getFloorOffsetTop(keyList: Array<T>, floorIdPrefix: string): floorOffsetTopMapProps
+  getActiveFloorKey(
+    keyList: Array<T>,
+    floorIdPrefix: string,
+    clientHeight: number,
+    scrollTop: number,
+    scrollCheckOffsetTop: boolean
+  ): T
+  checkFloorOffsetTopUpdate(keyList: (string | number)[], floorIdPrefix: string): boolean
+  scrollToNav(scrollNavContainer: S, key: T, navIdPrefix: string): void
+  scrollToFloor(scrollElment: HTMLElement, key: T, floorIdPrefix: string, navHeight: number): void
   getNavNodeByKey(key: T, navIdPrefix: string): HTMLElement | null
   getNavFloorByKey(key: T, floorIdPrefix: string): HTMLElement | null
 }
 
-
-export class NavPageUtil implements navPageUtilProps{
-  floorOffsetTopMap = null
-  mergeStyle(fixedStyle) {
+export class NavPageUtil implements navPageUtilProps {
+  floorOffsetTopMap: floorOffsetTopMapProps | null = null
+  mergeStyle(fixedStyle: React.CSSProperties): React.CSSProperties {
     return {
-      position: "fixed",
+      position: 'fixed',
       left: 0,
       right: 0,
       top: 0,
       ...fixedStyle
     }
   }
-  getOffsetLeft(elment) {
-    let offsetLeft = 0;
-    while (elment != window.document.body && elment != null) {
-      offsetLeft += elment.offsetLeft;
-      elment = (elment.offsetParent as HTMLElement);
+  getOffsetLeft(elment: HTMLElement): number {
+    let offsetLeft = 0
+    while (elment !== window.document.body && elment != null) {
+      offsetLeft += elment.offsetLeft
+      elment = elment.offsetParent as HTMLElement
     }
-    return offsetLeft;
+    return offsetLeft
   }
-  getOffsetTop(elment) {
-    let offsetTop = 0;
-    while (elment != window.document.body && elment != null) {
-      offsetTop += elment.offsetTop;
-      elment = (elment.offsetParent as HTMLElement);
+  getOffsetTop(elment: HTMLElement): number {
+    let offsetTop = 0
+    while (elment !== window.document.body && elment != null) {
+      offsetTop += elment.offsetTop
+      elment = elment.offsetParent as HTMLElement
     }
-    return offsetTop;
+    return offsetTop
   }
-  getFloorOffsetTop(keyList, floorIdPrefix) {
-    let maps = {}
+  getFloorOffsetTop(keyList: (string | number)[], floorIdPrefix: string): floorOffsetTopMapProps {
+    let maps: any = {}
     keyList.forEach((item: any) => {
       const idName = `${floorIdPrefix}${item}`
       const floorElement: HTMLElement | null = document.getElementById(idName)
@@ -82,27 +88,53 @@ export class NavPageUtil implements navPageUtilProps{
     })
     return maps
   }
-  getActiveFloorKey(keyList, floorIdPrefix, clientHeight, scrollTop) {
-    if(!this.floorOffsetTopMap){
-      this.floorOffsetTopMap = this.getFloorOffsetTop(keyList, floorIdPrefix)
+  checkFloorOffsetTopUpdate(keyList: (string | number)[], floorIdPrefix: string): boolean {
+    let result = false
+    const lastFloorKey = keyList[keyList.length - 1]
+    const lastFloorNode = this.getNavFloorByKey(lastFloorKey, floorIdPrefix)
+    const prevFloorOffsetTopData = this.floorOffsetTopMap
+    if (lastFloorNode && prevFloorOffsetTopData) {
+      const lastFloorOffsetTop = this.getOffsetTop(lastFloorNode)
+      if (lastFloorOffsetTop === prevFloorOffsetTopData[`${floorIdPrefix}${lastFloorKey}`]) {
+        result = false
+      } else {
+        result = true
+      }
     }
-    let floorIdNames: string = floorIdPrefix;
+    return result
+  }
+  getActiveFloorKey(
+    keyList: (string | number)[],
+    floorIdPrefix: string,
+    clientHeight: number,
+    scrollTop: number,
+    scrollCheckOffsetTop: boolean
+  ): string | number {
+    if (!this.floorOffsetTopMap) {
+      this.floorOffsetTopMap = this.getFloorOffsetTop(keyList, floorIdPrefix)
+    } else {
+      if (scrollCheckOffsetTop) {
+        const hasUpdate = this.checkFloorOffsetTopUpdate(keyList, floorIdPrefix)
+        if (hasUpdate) {
+          this.floorOffsetTopMap = this.getFloorOffsetTop(keyList, floorIdPrefix)
+        }
+      }
+    }
+    let floorIdNames: string = floorIdPrefix
     for (let floor in this.floorOffsetTopMap) {
-      if ((this.floorOffsetTopMap[floor] - clientHeight) < scrollTop) {
-        floorIdNames = floor;
+      if (this.floorOffsetTopMap[floor] - clientHeight < scrollTop) {
+        floorIdNames = floor
       }
     }
     return floorIdNames.split(floorIdPrefix)[1]
   }
-  getNavNodeByKey(key, navIdPrefix) {
-    return document.getElementById(`${navIdPrefix}${key}`)
-  }
-  getNavFloorByKey(key, floorIdPrefix) {
-    return document.getElementById(`${floorIdPrefix}${key}`)
-  }
-  scrollToNav(scrollNavContainer, key, navIdPrefix) {
+  scrollToNav(
+    scrollNavContainer: string | React.RefObject<HTMLElement>,
+    key: string | number,
+    navIdPrefix: string
+  ): void {
     let scrollNavElement = null
-    if (typeof scrollNavContainer === "string") {
+    if (typeof scrollNavContainer === 'string') {
       scrollNavElement = document.querySelector(scrollNavContainer)
     } else {
       scrollNavElement = scrollNavContainer.current
@@ -110,10 +142,17 @@ export class NavPageUtil implements navPageUtilProps{
     if (scrollNavElement) {
       const navNode = this.getNavNodeByKey(key, navIdPrefix)
       if (navNode) {
-        const overflowWidthRight = navNode.offsetLeft - scrollNavElement.scrollLeft + navNode.clientWidth - scrollNavElement.clientWidth
+        const overflowWidthRight =
+          navNode.offsetLeft -
+          scrollNavElement.scrollLeft +
+          navNode.clientWidth -
+          scrollNavElement.clientWidth
         const overflowWidthLeft = navNode.offsetLeft - scrollNavElement.scrollLeft
         if (overflowWidthRight > 0) {
-          const scrollWidth = Math.abs(overflowWidthRight) >= navNode.clientWidth ? overflowWidthRight : navNode.clientWidth
+          const scrollWidth =
+            Math.abs(overflowWidthRight) >= navNode.clientWidth
+              ? overflowWidthRight
+              : navNode.clientWidth
           scrollNavElement.scrollTo(scrollNavElement.scrollLeft + scrollWidth, 0)
         } else if (overflowWidthLeft < 0) {
           scrollNavElement.scrollTo(scrollNavElement.scrollLeft - Math.abs(navNode.clientWidth), 0)
@@ -121,32 +160,54 @@ export class NavPageUtil implements navPageUtilProps{
       }
     }
   }
-  scrollToFloor(scrollElment, key, floorIdPrefix, navHeight = 0) {
+  scrollToFloor(
+    scrollElment: HTMLElement,
+    key: string | number,
+    floorIdPrefix: string,
+    navHeight: number
+  ): void {
     const floorNode = this.getNavFloorByKey(key, floorIdPrefix)
     if (key && scrollElment && floorNode) {
       const offsetTop = this.getOffsetTop(floorNode)
       scrollElment.scrollTo(0, offsetTop - navHeight)
     }
   }
+  getNavNodeByKey(key: string | number, navIdPrefix: string): HTMLElement | null {
+    return document.getElementById(`${navIdPrefix}${key}`)
+  }
+  getNavFloorByKey(key: string | number, floorIdPrefix: string): HTMLElement | null {
+    return document.getElementById(`${floorIdPrefix}${key}`)
+  }
 }
 
 const NavPage = (props: navPageProps, ref: React.Ref<any>) => {
-  let { children, scrollContainer, floorIdPrefix, keyList = [], scrollNavContainer, navIdPrefix,height = 0, onChange = () => { }, fixedStyle = {} } = props
+  let {
+    children,
+    scrollContainer,
+    floorIdPrefix = '',
+    keyList = [],
+    scrollNavContainer,
+    navIdPrefix = '',
+    height = 0,
+    scrollCheckOffsetTop = false,
+    onChange = () => {},
+    fixedStyle = {}
+  } = props
   const [navStyle, setNavStyle] = useState<React.CSSProperties>({})
   const disScrollRef = useRef(false)
   const navRef = useRef<any>(null)
-  const scrollInfo = useScroll(scrollContainer, 50)
+  const scrollInfo: any = useScroll(scrollContainer, 50)
   const navPageUtilInstanceRef = useRef<navPageUtilProps>(new NavPageUtil())
 
   const navPageUtil = useMemo(() => {
     return navPageUtilInstanceRef.current
-  },[navPageUtilInstanceRef])
+  }, [navPageUtilInstanceRef])
 
-  const handleScrollToNav = (key) => {
+  const handleScrollToNav = (key: string | number) => {
     navPageUtil.scrollToNav(scrollNavContainer, key, navIdPrefix)
   }
 
-  const handleScrollToFloor = (key) => {
+  const handleScrollToFloor = (key: string | number) => {
     setDisScroll(true)
     navPageUtil.scrollToFloor(scrollInfo.scrollElement, key, floorIdPrefix, height)
     handleScrollToNav(key)
@@ -162,9 +223,9 @@ const NavPage = (props: navPageProps, ref: React.Ref<any>) => {
   useImperativeHandle(ref, () => ({
     scrollToFloor: handleScrollToFloor,
     scrollToNav: handleScrollToNav,
-    scrollTo(key: string | number){
-      handleScrollToNav(key);
-      handleScrollToFloor(key);
+    scrollTo(key: string | number) {
+      handleScrollToNav(key)
+      handleScrollToFloor(key)
     }
   }))
 
@@ -172,30 +233,39 @@ const NavPage = (props: navPageProps, ref: React.Ref<any>) => {
     const navNode: HTMLElement = navRef.current
     if (navNode) {
       const navRect = navNode.getBoundingClientRect()
-      if (navRect.top <= 0 && navStyle.position !== "fixed") {
+      if (navRect.top <= 0 && navStyle.position !== 'fixed') {
         const mergeStyle = navPageUtil.mergeStyle(fixedStyle)
         setNavStyle(mergeStyle)
-      } else if(navRect.top > 0 && navStyle.position === "fixed") {
+      } else if (navRect.top > 0 && navStyle.position === 'fixed') {
         setNavStyle(fixedStyle)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollInfo, navStyle])
 
   useEffect(() => {
     if (!getDisScroll()) {
-      const activeFloorKey = navPageUtil.getActiveFloorKey(keyList, floorIdPrefix, scrollInfo.clientHeight, scrollInfo.scrollTop)
+      const activeFloorKey = navPageUtil.getActiveFloorKey(
+        keyList,
+        floorIdPrefix,
+        scrollInfo.clientHeight,
+        scrollInfo.scrollTop,
+        scrollCheckOffsetTop
+      )
       if (activeFloorKey) {
         handleScrollToNav(activeFloorKey)
         onChange(activeFloorKey)
       }
     }
     setDisScroll(false)
-  }, [scrollInfo])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scrollInfo, scrollCheckOffsetTop])
 
-
-  return <div ref={navRef} style={{ height: height+"px" }}>
-    <div style={navStyle}>{children}</div>
-  </div>
+  return (
+    <div ref={navRef} style={{ height: `${height}px` }}>
+      <div style={navStyle}>{children}</div>
+    </div>
+  )
 }
 
 export default forwardRef(NavPage)
@@ -261,7 +331,7 @@ export default function NavPageDemo() {
   return <div id="J_nav_page_demo" style={{ height: "100%", overflow: "auto" }}>
     <div style={{ height: "200px" }}><h2>React Nav Page Demo</h2></div>
 
-    <NavPage fixedStyle={styleFixedStyle} height={60} ref={fixedNavRef}  onChange={handleChangeActive} floorIdPrefix={floorIdPrefix} scrollContainer="#J_nav_page_demo" scrollNavContainer={scrollNavRef} navIdPrefix={navIdPrefix} keyList={keyList}>
+    <NavPage fixedStyle={styleFixedStyle} height={60} ref={fixedNavRef}  onChange={handleChangeActive} scrollCheckOffsetTop={true} floorIdPrefix={floorIdPrefix} scrollContainer="#J_nav_page_demo" scrollNavContainer={scrollNavRef} navIdPrefix={navIdPrefix} keyList={keyList}>
       <nav style={styleNavWrap}>
         <ul ref={scrollNavRef} style={styleScrollNav}>
           {data.map((item: any) => {
@@ -303,6 +373,7 @@ const styleCurrent :React.CSSProperties= {
 |children|自定义导航栏元素|`React.ReactNode`|无|
 |height|导航栏高度，单位px|`number`|0|
 |fixedStyle|固定顶部样式|`React.CSSProperties`|{position: "fixed",left: 0,right: 0,top: 0,}|
+|scrollCheckOffsetTop|每次滚动的时候重新获取offsetTop值,主要为了解决异步渲染高度不固定情况|`boolean`|false|
 |onChange|滚动的时候key变更回调|`function(key){}`|
 
 ### 父组件调用的方法
