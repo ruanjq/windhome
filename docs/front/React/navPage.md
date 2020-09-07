@@ -260,9 +260,9 @@ const NavPage = (props: navPageProps, ref: React.Ref<any>) => {
     setDisScroll(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollInfo, scrollCheckOffsetTop])
-
+  const styleHeight = { height: height + 'px' }
   return (
-    <div ref={navRef} style={{ height: `${height}px` }}>
+    <div ref={navRef} style={styleHeight}>
       <div style={navStyle}>{children}</div>
     </div>
   )
