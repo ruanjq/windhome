@@ -369,3 +369,52 @@ document.getElementById("J_debounce").addEventListener("click", function () {
 - CommonJS的动态语法可以写在判断里，ES6 Module静态语法只能写在顶层
 - CommonJS的this指向当前模块，ES6 Module的this是undefined
 ```
+
+## 实现一个reduce函数
+```javascript
+const reduce = (arr, fn, initValue) => {
+  let result = initValue
+  try {
+    arr.forEach(item => {
+      result = fn(result, item)
+    })
+  } catch (error) {
+    
+  }
+  return result
+}
+
+// [1,1,1,2,3,3,3,4,4]
+reduce([[1,1,1],[2],[3,3,3],[4,4]],(currentValue,item) => {
+  return currentValue.concat(item)
+}, [])
+
+// 10
+reduce([1,2,3,4],(currentValue,item) => {
+  return currentValue.concat(item)
+}, 0)
+```
+
+
+## 实现一个compose函数
+```javascript
+function compose(...args){
+  return function(x){
+    return args.reduce((currentVal, fnItem) => {
+      return fnItem(currentVal)
+    },x)
+  }
+}
+
+const toUpperCase = (x) => {
+    return x.toUpperCase()
+}
+
+const split = (x) =>{
+    return x.split(',')
+}
+
+const str = 'hello world'
+
+const result = compose(toUpperCase, split)(str)
+```
