@@ -21,7 +21,7 @@ lang: zh-CN
 
 
 ## 随笔感悟
-### [Life](/life/ "Life")
+### [Life](/life/product/ "Life")
 
 
 ## 摸鱼网站
